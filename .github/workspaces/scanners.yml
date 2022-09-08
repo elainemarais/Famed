@@ -1,0 +1,22 @@
+name: Famed Scanners
+
+on: push
+
+jobs:
+  #deployment:
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #    - name: Scan domain with TestSSL
+  #      uses: fjogeleit/http-request-action@v1
+  #      with:
+  #        url: 'https://kudos-github-backend-w6trb.ondigitalocean.app/famed/repos/morphysm/famed-github-backend-test-prod/scanner'
+  #        method: 'POST'
+  #        customHeaders: '{"Content-Type": "application/json"}'
+  #        data: 'name=testssl&params[]=mydomain.example'
+  sendContractsToSlither:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: |
+          shopt -s globstar; tar -cvf archive.tar **/*.sol
+          curl -X POST https://kudos-github-backend-w6trb.ondigitalocean.app/famed/repos/morphysm/famed-github-backend-test-prod/scanner -F "name=slither" -F files=@archive.tar
